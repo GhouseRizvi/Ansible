@@ -1,0 +1,24 @@
+---
+- name: Deploying artifact to web server
+  hosts: webserver
+  become: yes
+  tasks:
+    - name: Installing httpd
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Copying files to the server
+      ansible.builtin.copy:
+        src: /home/ubuntu/vprofile/excercise5/zentro/
+        dest: /var/www/html/
+        owner: apache
+        group: apache
+        mode: '0644'
+
+    - name: Starting and enabling the service
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes
+
