@@ -1,0 +1,26 @@
+- name: Understanding vars
+  hosts: all
+  become: yes
+  
+#  vars:
+# usrnm: playuser
+# comm: variable from playbook  
+  
+  tasks:                        
+    - name: create use
+      # creating the user
+      ansible.builtin.user:
+        name: "{{usrnm}}"
+        comment: "{{comm}}"
+      # storing the output    
+      register: usrout
+
+    #printing the variable
+    - debug:
+        # instead of pring whole json we're only printing name value from json file
+        var: usrout.name
+    
+    - debug:
+        # instead of pring whole json we're only printing comment value from json file
+        var: usrout.comment
+

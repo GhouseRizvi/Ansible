@@ -1,0 +1,49 @@
+crate a playbook called var_preceedence.yaml
+
+let us understand the variable preceedence from where ansible is picking up the values
+
+lets create a simple task
+
+So here its going to create a user look for variables in the file locally and use it
+- name: Understanding vars
+  hosts: all
+  become: yes
+  
+  vars:
+    usrnm: playuser
+    comm: variable from playbook  
+  
+  tasks:                        
+    - name: create use
+      # creating the user
+      ansible.builtin.user:
+        name: "{{usrnm}}"
+        comment: "{{comm}}"
+      # storing the output    
+      register: usrout
+
+    #printing the variable
+    - debug:
+        # instead of pring whole json we're only printing name value from json file
+        var: usrout.name
+    
+    - debug:
+        # instead of pring whole json we're only printing comment value from json file
+        var: usrout.comment
+
+######################################################################################################
+Now let us create mkdir group_vars
+cd group_vars
+vim all
+
+and mention the variables
+
+usrnm: commonuser
+comm: variable from group_vars/all file
+
+save and quit
+
+######################################################################################################so now we need to comment the local variables from the preceedence file
+and run the file
+
+
