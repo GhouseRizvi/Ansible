@@ -1,0 +1,29 @@
+We have seen how to define variable in the playbook for understanding purpose
+mostly variables are defined outside of the variable that is for reusability purpose.
+
+#####################################################################################################
+here we're agoing to define the variables
+
+mkdir group_vars
+
+crate the file inside that called all 
+
+follow the same structure 
+
+dbname: sky
+dbuser: pilot
+dbpass: aircraft
+
+these are 3 variable we defined in the group_vars/all file 
+
+so now if you run the ansible-playbook db.yaml it'll run with its local variable because its have a higher priority
+  
+#####################################################################################################
+
+lets redirect the db.yaml to use the variable from group_var/all file 
+open the db.yaml comment the local variable save it
+now the variable it'll not find in the playbook 
+so it'll go out and look for the variables  
+wher will it look?
+ansible has it structure "garoup_vars/all"
+so it'll look for the variables in group_vars/all file and execute the module  

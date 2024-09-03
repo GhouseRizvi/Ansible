@@ -1,0 +1,57 @@
+---
+- name: DBserver setup
+  hosts: dbserver
+  become: yes
+  # variable s needs to be defisned before tasks
+  # vars:
+  # dbname: electric
+  # dbuser: current
+  # dbpass: tesla
+  tasks:
+    #print that variable during run
+    - debug:
+        msg: " The DB name is {{dbname}}"
+          #dbug is used for printing purpose
+    - debug:
+        var: dbuser
+
+    - name: install mariadb-server
+      ansible.builtin.yum:
+        name: mariadb-server
+        state: present
+
+    - name: start mariadb service
+      ansible.builtin.service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: install python3-PyMySQL
+      ansible.builtin.yum:
+        name: python3-PyMySQL
+        state: present
+
+    - name: Create a new database
+      mysql_db:
+        name: "{{dbname}}"
+        state: present
+    - name: Create database
+      mysql_user:
+        name: "{{dbuser}}"
+        password: "{{dbpass}}"
+        priv: '*.*:ALL'
+        state: present
+      register: dbout
+
+    - name: print dbout variable
+      #wecan use - name to define name else we can user 
+      # - debug directly under name - not needed
+      debug: 
+        var: dbout
+
+
+# the module executes and returns out put by default it supressed and where does it go so how use it 
+# by using the register register; variablename it is going to store
+# all the json out put into the variable  
+# and we can use debug module toprint that
+# debug is mostly used for trouble shooting 
